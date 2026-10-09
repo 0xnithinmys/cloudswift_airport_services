@@ -114,7 +114,7 @@ export function Manifesto() {
 export function Services() {
   return (
     <section id="services" className="relative py-28 md:py-36">
-      <div aria-hidden className="absolute right-0 top-40 -z-10 h-[500px] w-[500px] rounded-full bg-violet/10 blur-[140px]" />
+      <div aria-hidden className="absolute right-0 top-40 -z-10 h-[500px] w-[500px] rounded-full bg-[radial-gradient(closest-side,rgba(167,139,250,0.12),transparent)]" />
       <div className="mx-auto max-w-6xl px-4">
         <SectionHeading
           eyebrow="What we do"
@@ -147,7 +147,7 @@ function ServiceCard({ service, index, big }: { service: (typeof services)[numbe
         {/* no overflow-hidden here: it would flatten the translateZ depth layers */}
         <div className="relative flex h-full flex-col rounded-[28px] border border-white/[0.08] bg-gradient-to-b from-white/[0.06] to-white/[0.01] p-7 preserve-3d md:p-8">
           <div aria-hidden className="absolute inset-0 overflow-hidden rounded-[28px]">
-            <div className="absolute -right-20 -top-20 h-60 w-60 rounded-full bg-gold/0 blur-3xl transition-colors duration-700 group-hover:bg-gold/20" />
+            <div className="absolute -right-20 -top-20 h-60 w-60 rounded-full bg-[radial-gradient(closest-side,rgba(244,201,122,0.3),transparent)] opacity-0 transition-opacity duration-700 group-hover:opacity-100" />
           </div>
           {service.image ? (
             // illustration floats forward in 3D; overflow-hidden only clips the image itself

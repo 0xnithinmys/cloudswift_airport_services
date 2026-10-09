@@ -32,7 +32,7 @@ export default function Booking() {
 
   return (
     <section id="book" className="relative py-28 md:py-36">
-      <div aria-hidden className="absolute inset-x-0 top-1/3 -z-10 mx-auto h-[500px] max-w-4xl rounded-full bg-gold/10 blur-[150px]" />
+      <div aria-hidden className="absolute inset-x-0 top-1/3 -z-10 mx-auto h-[500px] max-w-4xl rounded-full bg-[radial-gradient(closest-side,rgba(244,201,122,0.12),transparent)]" />
       <div className="mx-auto max-w-6xl px-4">
         <SectionHeading
           eyebrow="Book now"
@@ -55,7 +55,7 @@ export default function Booking() {
                     e.preventDefault();
                     setFlipped(true);
                   }}
-                  className="glow-border relative rounded-[32px] border border-white/10 bg-gradient-to-br from-white/[0.08] to-white/[0.02] p-6 shadow-[0_50px_120px_-30px_rgba(0,0,0,0.9)] backdrop-blur-2xl md:p-10"
+                  className="glow-border relative rounded-[32px] border border-white/10 bg-[#0a0f1d]/70 bg-gradient-to-br from-white/[0.08] to-white/[0.02] p-6 shadow-[0_50px_120px_-30px_rgba(0,0,0,0.9)] md:p-10"
                 >
                   <div className="flex items-center justify-between">
                     <div>

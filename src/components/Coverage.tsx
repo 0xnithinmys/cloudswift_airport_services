@@ -49,7 +49,7 @@ export default function Coverage() {
 
   return (
     <section id="airports" className="relative overflow-hidden py-28 md:py-36">
-      <div aria-hidden className="absolute left-1/2 top-1/3 -z-10 h-[600px] w-[900px] -translate-x-1/2 rounded-full bg-sky/10 blur-[150px]" />
+      <div aria-hidden className="absolute left-1/2 top-1/3 -z-10 h-[600px] w-[900px] -translate-x-1/2 rounded-full bg-[radial-gradient(closest-side,rgba(122,167,255,0.12),transparent)]" />
       <div className="mx-auto max-w-6xl px-4">
         <SectionHeading
           eyebrow="Global coverage"

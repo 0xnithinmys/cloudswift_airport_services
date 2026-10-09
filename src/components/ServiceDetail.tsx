@@ -16,7 +16,7 @@ export default function ServiceDetail({ slug }: { slug: string }) {
     <>
       <section className="noise relative overflow-hidden pt-36 pb-20 md:pt-44">
         <div aria-hidden className="grid-bg absolute inset-0 -z-10" />
-        <div aria-hidden className="absolute -top-40 left-1/2 -z-10 h-[520px] w-[800px] -translate-x-1/2 rounded-full bg-sky/15 blur-[140px]" />
+        <div aria-hidden className="absolute -top-40 left-1/2 -z-10 h-[520px] w-[800px] -translate-x-1/2 rounded-full bg-[radial-gradient(closest-side,rgba(122,167,255,0.16),transparent)]" />
         <div className="mx-auto max-w-6xl px-4">
           <Link href="/#services" className="inline-flex items-center gap-2 text-sm text-muted hover:text-white">
             <ArrowLeft className="h-4 w-4" /> All services
@@ -27,8 +27,8 @@ export default function ServiceDetail({ slug }: { slug: string }) {
                 <Eyebrow>Service</Eyebrow>
               </motion.div>
               <motion.h1
-                initial={{ opacity: 0, y: 30, filter: "blur(10px)" }}
-                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.9, ease }}
                 className="mt-6 text-5xl font-semibold tracking-tight text-white md:text-6xl"
               >

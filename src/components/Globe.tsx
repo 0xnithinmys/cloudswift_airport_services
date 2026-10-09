@@ -3,13 +3,17 @@
 import createGlobe from "cobe";
 import { useEffect, useRef } from "react";
 import { globePoints } from "@/lib/site";
+import { useStage } from "@/lib/stage";
 
 // Interactive WebGL globe with airport markers and flight arcs from the hub. Drag to spin.
 export default function Globe({ className = "" }: { className?: string }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const drag = useRef<{ x: number; phi: number } | null>(null);
+  // creating the globe compiles shaders and blocks the main thread briefly, so it waits for a still moment
+  const ready = useStage("prepare");
 
   useEffect(() => {
+    if (!ready) return;
     const canvas = canvasRef.current!;
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const dpr = 1; // the globe is large; 1x keeps it smooth on integrated GPUs
@@ -92,7 +96,7 @@ export default function Globe({ className = "" }: { className?: string }) {
       canvas.removeEventListener("pointercancel", up);
       globe.destroy();
     };
-  }, []);
+  }, [ready]);
 
   return (
     <div className={`relative aspect-square ${className}`}>

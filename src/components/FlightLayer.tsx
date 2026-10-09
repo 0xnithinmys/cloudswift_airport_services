@@ -1,8 +1,9 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { requestFlyby } from "@/lib/flyby";
+import { useStage } from "@/lib/stage";
 
 // three.js is client-only and heavy, so load the 3D jet lazily without SSR
 const Plane3D = dynamic(() => import("./Plane3D"), { ssr: false });
@@ -11,6 +12,18 @@ const Plane3D = dynamic(() => import("./Plane3D"), { ssr: false });
 const TRIGGERS = ["services", "how", "airports", "book", "contact"];
 
 export default function FlightLayer() {
+  // three.js is parsed and its WebGL scene built only after the intro and hero entrance have finished,
+  // in an idle moment, so none of that work lands on top of an animation
+  const settled = useStage("settled");
+  const [load, setLoad] = useState(false);
+
+  useEffect(() => {
+    if (!settled || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const ric = "requestIdleCallback" in window;
+    const id = ric ? window.requestIdleCallback(() => setLoad(true), { timeout: 2000 }) : window.setTimeout(() => setLoad(true), 300);
+    return () => (ric ? window.cancelIdleCallback(id) : window.clearTimeout(id));
+  }, [settled]);
+
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
@@ -39,5 +52,5 @@ export default function FlightLayer() {
     };
   }, []);
 
-  return <Plane3D />;
+  return load ? <Plane3D /> : null;
 }

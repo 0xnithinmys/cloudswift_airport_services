@@ -65,12 +65,50 @@ h1, h2, h3, h4 {
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  animation: shine 6s linear infinite;
+  /* a sweep then a rest: the gradient only repaints the large headline while it is moving */
+  animation: shine 7s ease-in-out infinite;
 }
 
 @keyframes shine {
-  from { background-position: 100% 0; }
-  to { background-position: -150% 0; }
+  0% { background-position: 100% 0; }
+  40%, 100% { background-position: -150% 0; }
+}
+
+/* Ambient loops run as CSS transform/opacity animations, which the browser composites off the main thread */
+.float-bob { animation: float-bob 5s ease-in-out infinite; }
+@keyframes float-bob {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(0, -10px, 0); }
+}
+
+.progress-sweep { animation: progress-sweep 4.4s ease-in-out 2s infinite both; }
+@keyframes progress-sweep {
+  0% { transform: scaleX(0); }
+  55%, 100% { transform: scaleX(1); }
+}
+
+.blob-pulse { animation: blob-pulse 10s ease-in-out infinite; }
+@keyframes blob-pulse {
+  0%, 100% { transform: scale(1); opacity: 0.8; }
+  50% { transform: scale(1.1); opacity: 1; }
+}
+
+.blob-drift-a { animation: blob-drift-a 16s ease-in-out infinite; }
+@keyframes blob-drift-a {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(60px, -40px, 0); }
+}
+
+.blob-drift-b { animation: blob-drift-b 14s ease-in-out infinite; }
+@keyframes blob-drift-b {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(-50px, 50px, 0); }
+}
+
+.twinkle { opacity: 0.1; animation: twinkle 3s ease-in-out infinite; }
+@keyframes twinkle {
+  0%, 100% { opacity: 0.1; }
+  50% { opacity: 0.9; }
 }
 
 .grid-bg {
@@ -132,7 +170,8 @@ h1, h2, h3, h4 {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .text-shine, .glow-border::before { animation: none; }
+  .text-shine, .glow-border::before, .float-bob, .blob-pulse, .blob-drift-a, .blob-drift-b, .twinkle { animation: none; }
+  .progress-sweep { animation: none; transform: scaleX(1); }
 }
 
 html[data-intro-seen] .intro-overlay {

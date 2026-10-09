@@ -43,17 +43,20 @@ export function SplitText({
   className = "",
   delay = 0,
   inView = false,
+  play = true,
 }: {
   text: string;
   className?: string;
   delay?: number;
   inView?: boolean;
+  // when not using inView, hold the text hidden until this turns true
+  play?: boolean;
 }) {
   const words = text.split(" ");
   let idx = 0;
   const trigger = inView
     ? { initial: "hidden", whileInView: "show", viewport: { once: true, margin: "-60px" } }
-    : { initial: "hidden", animate: "show" };
+    : { initial: "hidden", animate: play ? "show" : "hidden" };
   return (
     <motion.span {...trigger} className={`inline-block ${className}`} style={{ perspective: 600 }}>
       {words.map((w, wi) => (

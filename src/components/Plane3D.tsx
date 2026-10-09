@@ -206,18 +206,21 @@ type ActiveFlight = { id: number; curve: THREE.CubicBezierCurve3; variant: Varia
 function Flight() {
   const group = useRef<THREE.Group>(null);
   const banker = useRef<THREE.Group>(null);
-  const { viewport, size, invalidate } = useThree();
+  const { viewport, size, invalidate, gl, scene, camera } = useThree();
   const flight = useRef<ActiveFlight | null>(null);
   const lastEnd = useRef(-Infinity);
   const nextVariant = useRef(0);
   const [trailKey, setTrailKey] = useState(0);
+  // flybys wait until every shader is compiled, so the first one never stalls the page
+  const warm = useRef(false);
+  const [isWarm, setIsWarm] = useState(false);
 
   const scale = Math.min(viewport.width * 0.085, viewport.height * 0.06);
 
   // listen for flyby requests
   useEffect(() => {
     const onFlyby = (e: Event) => {
-      if (flight.current || now() - lastEnd.current < 3) return; // one at a time, with a breather between
+      if (!warm.current || flight.current || now() - lastEnd.current < 3) return; // one at a time, with a breather between
       const dir = (e as CustomEvent<FlybyDetail>).detail?.direction ?? 1;
       const variant = VARIANTS[nextVariant.current++ % VARIANTS.length];
       const pts = variant.points.map(
@@ -231,12 +234,36 @@ function Flight() {
     return () => window.removeEventListener(FLYBY_EVENT, onFlyby);
   }, [invalidate, viewport.width, viewport.height]);
 
-  // welcome flyby as soon as the jet has loaded
+  // Pre-compile every material off the main thread (KHR_parallel_shader_compile) once <Environment> has set
+  // scene.environment, so the programs built here are exactly the ones the flybys use.
   useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const t = window.setTimeout(() => window.dispatchEvent(new CustomEvent(FLYBY_EVENT, { detail: { direction: 1 } })), 700);
+    let cancelled = false;
+    let timer = 0;
+    const warmUp = (tries: number) => {
+      if (cancelled) return;
+      if (!scene.environment && tries > 0) {
+        timer = window.setTimeout(() => warmUp(tries - 1), 50);
+        return;
+      }
+      gl.compileAsync(scene, camera).then(() => {
+        if (cancelled) return;
+        warm.current = true;
+        setIsWarm(true);
+      });
+    };
+    warmUp(40);
+    return () => {
+      cancelled = true;
+      window.clearTimeout(timer);
+    };
+  }, [gl, scene, camera]);
+
+  // welcome flyby as soon as the jet is ready
+  useEffect(() => {
+    if (!isWarm) return;
+    const t = window.setTimeout(() => window.dispatchEvent(new CustomEvent(FLYBY_EVENT, { detail: { direction: 1 } })), 150);
     return () => window.clearTimeout(t);
-  }, []);
+  }, [isWarm]);
   useFrame(() => {
     const g = group.current;
     const b = banker.current;
@@ -250,7 +277,7 @@ function Flight() {
 
     const raw = (now() - f.start) / f.variant.duration;
     if (raw >= 1) {
-      g.visible = false;
+      g.scale.setScalar(0);
       flight.current = null;
       lastEnd.current = now();
       invalidate();
@@ -260,7 +287,6 @@ function Flight() {
     const u = easeInOutSine(raw);
     f.curve.getPoint(u, tmp.p);
     f.curve.getPoint(Math.min(u + 0.01, 1), tmp.a);
-    g.visible = true;
     g.position.copy(tmp.p);
     g.lookAt(tmp.target.copy(tmp.a).sub(tmp.p).normalize().add(tmp.p));
 
@@ -279,7 +305,8 @@ function Flight() {
   });
 
   return (
-    <group ref={group} visible={false} scale={scale}>
+    // hidden between flights with scale 0 (not `visible`), so the light count and shaders never change
+    <group ref={group} scale={0}>
       <group ref={banker}>
         <Jet />
       </group>

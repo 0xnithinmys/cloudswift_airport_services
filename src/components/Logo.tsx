@@ -12,6 +12,8 @@ type Props = {
   tone?: keyof typeof TONES;
   // Fly the fish in when mounted or when scrolled into view; animated marks also take off again on hover.
   play?: "mount" | "inView";
+  // with play="mount", hold the mark hidden until this turns true (used to wait for the intro curtain)
+  active?: boolean;
   delay?: number;
 };
 
@@ -49,7 +51,7 @@ const variants = (delay: number): Record<string, Variants> => ({
   },
 });
 
-export default function LogoMark({ className, variant = "compact", tone = "gold", play, delay = 0 }: Props) {
+export default function LogoMark({ className, variant = "compact", tone = "gold", play, active = true, delay = 0 }: Props) {
   const uid = useId().replace(/[^a-zA-Z0-9]/g, "");
   const c = TONES[tone];
   const v = variants(delay);
@@ -58,7 +60,7 @@ export default function LogoMark({ className, variant = "compact", tone = "gold"
   const trigger = !play
     ? { initial: false as const, animate: "show" }
     : play === "mount"
-      ? { initial: "hidden", animate: "show", whileHover: "redraw" }
+      ? { initial: "hidden", animate: active ? "show" : "hidden", whileHover: "redraw" }
       : { initial: "hidden", whileInView: "show", viewport: { once: true, amount: 0.6 }, whileHover: "redraw" };
 
   return (

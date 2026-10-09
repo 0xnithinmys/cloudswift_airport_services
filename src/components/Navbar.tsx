@@ -5,6 +5,7 @@ import { Menu, X } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { site } from "@/lib/site";
+import { useStage } from "@/lib/stage";
 import LogoMark from "./Logo";
 import { ease } from "./ui";
 
@@ -22,6 +23,7 @@ export default function Navbar() {
   const [hidden, setHidden] = useState(false);
   const [open, setOpen] = useState(false);
   const [hovered, setHovered] = useState<string | null>(null);
+  const revealed = useStage("reveal");
 
   useMotionValueEvent(scrollY, "change", (y) => {
     const prev = scrollY.getPrevious() ?? 0;
@@ -43,7 +45,7 @@ export default function Navbar() {
         }`}
       >
         <Link href="/" className="flex items-center gap-2 font-brand text-[15px] font-semibold uppercase tracking-[0.14em] text-white">
-          <LogoMark play="mount" delay={0.3} className="h-9 w-9" />
+          <LogoMark play="mount" active={revealed} delay={0.2} className="h-9 w-9" />
           {site.name}
         </Link>
 
