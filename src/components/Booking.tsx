@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { ArrowLeft, ArrowRight, CalendarDays, MapPin, MessageCircle, Plane, Sparkles, Users } from "lucide-react";
 import { useState, useSyncExternalStore } from "react";
 import { regions, services, site } from "@/lib/site";
+import LogoMark from "./Logo";
 import { SectionHeading, TiltCard, ease } from "./ui";
 
 const field =
@@ -113,8 +114,8 @@ export default function Booking() {
             <div className="min-w-0 backface-hidden [grid-area:1/1] [transform:rotateY(180deg)]">
               <div className="noise relative flex h-full flex-col overflow-hidden rounded-[32px] bg-gradient-to-br from-[#f8e7c4] via-[#f4d79c] to-[#e9b860] p-6 text-ink shadow-[0_50px_120px_-30px_rgba(244,201,122,0.5)] md:p-10">
                 <div className="flex items-center justify-between">
-                  <span className="flex items-center gap-2 font-bold">
-                    <Plane className="h-5 w-5 -rotate-45" /> {site.name}
+                  <span className="flex items-center gap-2 font-brand font-bold uppercase tracking-[0.14em]">
+                    <LogoMark tone="ink" className="h-7 w-7" /> {site.name}
                   </span>
                   <span className="text-xs font-bold uppercase tracking-[0.25em] text-ink/60">Assistance pass</span>
                 </div>

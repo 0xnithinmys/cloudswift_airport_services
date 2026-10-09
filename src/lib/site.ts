@@ -1,16 +1,17 @@
 // Central content for the site. Edit brand, contact details and copy here.
 
 export const site = {
-  name: "CloudSwift",
-  fullName: "CloudSwift Airport Assist",
+  name: "Elohim",
+  fullName: "Elohim WorldWide Airport Assist",
   tagline: "Seamless airport assistance, every time.",
   description:
     "Premium meet & greet, VIP fast track, transit, lounge, porter and transfer services across 60+ airports in India, the Middle East, Asia, Europe and the USA.",
-  // TODO: replace with your real contact details
-  phone: "+91 00000 00000",
-  whatsapp: "+91 00000 00000",
-  email: "hello@cloudswift.example",
-  address: "Your office address, City, Country",
+  legalName: "Elohim WorldWide Airport Assist Private Limited",
+  phone: "+91 98455 70066",
+  whatsapp: "+91 98455 70066",
+  email: "enquiry@elohimairportassist.com",
+  address:
+    "Awfis Coworking-Mission Road, Renaissance Centra, 27 & 27/1, Kalinga Rao Road, Mission Rd, Sampangi Rama Nagara, Rama Nagar, Mission Road, Bengaluru 560027",
 };
 
 export type Service = {

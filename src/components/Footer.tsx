@@ -1,16 +1,14 @@
-import { Plane } from "lucide-react";
 import Link from "next/link";
 import { regions, services, site } from "@/lib/site";
+import LogoMark from "./Logo";
 
 export default function Footer() {
   return (
     <footer className="relative overflow-hidden border-t border-line pt-20">
       <div className="mx-auto grid max-w-6xl gap-12 px-4 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
         <div>
-          <Link href="/" className="flex items-center gap-2 text-lg font-semibold text-white">
-            <span className="grid h-8 w-8 place-items-center rounded-full bg-gradient-to-br from-sky to-gold text-ink">
-              <Plane className="h-4 w-4 -rotate-45" />
-            </span>
+          <Link href="/" className="flex items-center gap-2 font-brand text-lg font-semibold uppercase tracking-[0.14em] text-white">
+            <LogoMark play="inView" className="h-10 w-10" />
             {site.name}
           </Link>
           <p className="mt-4 max-w-xs text-sm leading-relaxed text-muted">{site.description}</p>
@@ -52,7 +50,7 @@ export default function Footer() {
 
       <div className="border-t border-line">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-4 py-6 text-xs text-muted md:flex-row">
-          <p>© {new Date().getFullYear()} {site.fullName}. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} {site.legalName}. All rights reserved.</p>
           <p>Fast track availability subject to local airport regulations.</p>
         </div>
       </div>

@@ -24,6 +24,7 @@
   --font-sans: var(--font-body);
   --font-display: var(--font-display);
   --font-serif: var(--font-serif);
+  --font-brand: var(--font-brand);
 }
 
 html,
@@ -132,4 +133,8 @@ h1, h2, h3, h4 {
 
 @media (prefers-reduced-motion: reduce) {
   .text-shine, .glow-border::before { animation: none; }
+}
+
+html[data-intro-seen] .intro-overlay {
+  display: none;
 }

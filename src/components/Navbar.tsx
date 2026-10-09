@@ -1,10 +1,11 @@
 "use client";
 
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "framer-motion";
-import { Menu, Plane, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { site } from "@/lib/site";
+import LogoMark from "./Logo";
 import { ease } from "./ui";
 
 const links = [
@@ -41,10 +42,8 @@ export default function Navbar() {
             : "border-transparent bg-transparent"
         }`}
       >
-        <Link href="/" className="flex items-center gap-2 font-semibold tracking-tight text-white">
-          <span className="grid h-8 w-8 place-items-center rounded-full bg-gradient-to-br from-sky to-gold text-ink">
-            <Plane className="h-4 w-4 -rotate-45" />
-          </span>
+        <Link href="/" className="flex items-center gap-2 font-brand text-[15px] font-semibold uppercase tracking-[0.14em] text-white">
+          <LogoMark play="mount" delay={0.3} className="h-9 w-9" />
           {site.name}
         </Link>
 

@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
-import { Bricolage_Grotesque, Instrument_Serif, Manrope } from "next/font/google";
+import { Bricolage_Grotesque, Cinzel, Instrument_Serif, Manrope } from "next/font/google";
 import Providers from "@/components/Providers";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import Intro from "@/components/Intro";
+import { INTRO_KEY } from "@/lib/logo";
 import { site } from "@/lib/site";
 import "./globals.css";
 
@@ -13,6 +15,12 @@ const display = Bricolage_Grotesque({
 
 const body = Manrope({
   variable: "--font-body",
+  subsets: ["latin"],
+});
+
+// Roman-capital wordmark face for the "ELOHIM" brand name.
+const brand = Cinzel({
+  variable: "--font-brand",
   subsets: ["latin"],
 });
 
@@ -52,14 +60,19 @@ const stripExtensionAttrs = `(function(){
   });
 })();`;
 
+// Skip the intro before first paint on repeat visits in the same session and for reduced-motion users.
+// Kept in the same <script> as the attribute stripper: React warns about each extra <script> it has to create on the client.
+const introSeen = `try{if(sessionStorage.getItem("${INTRO_KEY}")==="1"||matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElement.setAttribute("data-intro-seen","")}catch(e){};`;
+
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${display.variable} ${body.variable} ${serif.variable} antialiased`} suppressHydrationWarning>
+    <html lang="en" className={`${display.variable} ${body.variable} ${serif.variable} ${brand.variable} antialiased`} suppressHydrationWarning>
       <head>
-        <script dangerouslySetInnerHTML={{ __html: stripExtensionAttrs }} />
+        <script dangerouslySetInnerHTML={{ __html: introSeen + stripExtensionAttrs }} />
       </head>
       <body className="min-h-screen" suppressHydrationWarning>
         <Providers>
+          <Intro />
           <Navbar />
           {children}
           <Footer />
